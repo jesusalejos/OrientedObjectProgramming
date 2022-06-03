@@ -162,7 +162,28 @@ const cursoPracticoHTML = new Course({
       "Curso de Unreal",
     ],
   })
-  
+
+// comment class
+
+class Comment {
+  constructor({
+    content,
+    studentName,
+    studentRole = "estudiante",
+  }) {
+    this.content = content;
+    this.studentName = studentName;
+    this.studentRole = studentRole;
+    this.likes = 0;
+  }
+
+  publicar() {
+    console.log(this.studentName + " (" + this.studentRole + ")");
+    console.log(this.likes + " likes");
+    console.log(this.content);
+  }
+}
+
 //Student class
 
   class Student {
@@ -186,6 +207,14 @@ const cursoPracticoHTML = new Course({
       };
       this.approvedCourses = approvedCourses;
       this.learningPaths = learningPaths;
+    }
+
+    publicarComentario(commentContent) {
+      const comment = new Comment({
+        content: commentContent,
+        studentName: this.name,
+      });
+      comment.publicar();
     }
   }
   
@@ -227,7 +256,24 @@ const cursoPracticoHTML = new Course({
     }
   }
   
+  class TeacherStudent extends Student {
+    constructor(props) {
+      super(props);
+    }
   
+    approveCourse(newCourse) {
+      this.approvedCourses.push(newCourse);
+    }
+  
+    publicarComentario(commentContent) { //Example of the polymorphic
+      const comment = new Comment({
+        content: commentContent,
+        studentName: this.name,
+        studentRole: "profesor",
+      });
+      comment.publicar();
+    }
+  }
   
   const juan = new FreeStudent({
     name: "JuanDC",
@@ -250,7 +296,7 @@ const cursoPracticoHTML = new Course({
       escuelaData,
     ],
   });
-
+  
 // Teacher class
 
   class Teacher {
